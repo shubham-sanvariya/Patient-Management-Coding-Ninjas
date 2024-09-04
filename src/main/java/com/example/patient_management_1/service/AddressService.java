@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.patient_management_1.entity.Address;
-import com.example.patient_management_1.entity.Doctor;
 import com.example.patient_management_1.repository.AddressRepository;
 
 @Service
@@ -38,5 +37,13 @@ public class AddressService {
             throw new NoSuchElementException("address not found by id: " + address.getId());
         }
         addressRepository.save(address);
+    }
+
+    public void deleteAddressById(Long id) {
+        Address address = addressRepository.findById(id).get();
+        if (address == null) {
+            throw new NoSuchElementException("address not found by id: " + id);
+        }
+        addressRepository.deleteById(id);
     }
 }
