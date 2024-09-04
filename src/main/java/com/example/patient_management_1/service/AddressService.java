@@ -31,4 +31,12 @@ public class AddressService {
         }
         addressRepository.save(address);
     }
+
+    public void updateAddress(Address address) {
+        Address ad = addressRepository.findById(address.getId()).get();
+        if (ad == null) {
+            throw new NoSuchElementException("address not found by id: " + address.getId());
+        }
+        addressRepository.save(address);
+    }
 }
