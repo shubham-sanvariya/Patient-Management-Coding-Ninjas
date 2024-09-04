@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.patient_management_1.entity.Doctor;
 import com.example.patient_management_1.entity.Patient;
 import com.example.patient_management_1.repository.PatientRepository;
 
@@ -38,5 +37,13 @@ public class PatientService {
             throw new NoSuchElementException("patient not found by id: " + patient.getId());
         }
         patientRepository.save(patient);
+    }
+
+    public void deletePatientById(Long id) {
+        Patient patient = patientRepository.findById(id).get();
+        if (patient == null) {
+            throw new NoSuchElementException("patient not found by id: " + id);
+        }
+        patientRepository.deleteById(id);
     }
 }
