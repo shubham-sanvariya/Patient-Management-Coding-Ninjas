@@ -52,10 +52,9 @@ public class DoctorService {
     }
 
     public void deleteDoctorById(Long id){
-        Doctor doctor = doctorRepository.findById(id).get();
-        if (doctor == null) {
-            throw new NoSuchElementException("doctor not found by id: " + id);
-        }
+        doctorRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("doctor not found by id: " + id));
+
         doctorRepository.deleteById(id);
     }
 }
