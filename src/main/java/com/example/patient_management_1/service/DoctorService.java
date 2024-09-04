@@ -22,4 +22,12 @@ public class DoctorService {
 
         return doctor;
     }
+
+    public void saveDoctor(Doctor doctor){
+        Doctor dr = doctorRepository.findById(doctor.getId()).get();
+        if (dr == null) {
+            throw new NoSuchElementException("doctor not found by id: " + doctor.getId());
+        }
+        doctorRepository.save(doctor);
+    }
 }
