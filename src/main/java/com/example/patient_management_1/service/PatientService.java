@@ -31,4 +31,12 @@ public class PatientService {
         }
         patientRepository.save(patient);
     }
+
+    public void updatePatient(Patient patient) {
+        Patient pt = patientRepository.findById(patient.getId()).get();
+        if (pt == null) {
+            throw new NoSuchElementException("patient not found by id: " + patient.getId());
+        }
+        patientRepository.save(patient);
+    }
 }
