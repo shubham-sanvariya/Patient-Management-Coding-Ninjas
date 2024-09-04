@@ -37,7 +37,7 @@ public class DoctorService {
         if (dr != null) {
             throw new NoSuchElementException("doctor already exists by id: " + doctor.getId());
         }
-        
+
         doctorRepository.save(doctor);
         patient.setDoctor(doctor);
         patientRepository.save(patient);
