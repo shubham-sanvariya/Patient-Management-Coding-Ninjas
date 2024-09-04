@@ -30,4 +30,12 @@ public class DoctorService {
         }
         doctorRepository.save(doctor);
     }
+
+    public void updateDoctor(Doctor doctor){
+        Doctor dr = doctorRepository.findById(doctor.getId()).get();
+        if (dr == null) {
+            throw new NoSuchElementException("doctor not found by id: " + doctor.getId());
+        }
+        doctorRepository.save(doctor);
+    }
 }
