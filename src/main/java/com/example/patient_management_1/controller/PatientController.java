@@ -1,6 +1,7 @@
 package com.example.patient_management_1.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,5 +33,10 @@ public class PatientController {
     @PutMapping("/update")
     public void updatePatient(@RequestBody Patient patient) {
         patientService.updatePatient(patient);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deletePatient(@PathVariable Long id){
+        patientService.deletePatientById(id);
     }
 }
