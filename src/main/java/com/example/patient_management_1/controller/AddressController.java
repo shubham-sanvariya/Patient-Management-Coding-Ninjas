@@ -20,22 +20,22 @@ public class AddressController {
     AddressService addressService;
 
     @GetMapping("/{id}")
-    public Address getAddressById(@PathVariable Long id){
-        return addressService.getAddressById(id);
+    public Address getAddress(@PathVariable Long id) {
+        return addressService.getAddress(id);
     }
 
     @PostMapping("/add/{patientId}")
-    public void saveAddressForPatient(@PathVariable Long patientId, @RequestBody Address address){
-        addressService.saveAddress(patientId,address);
+    public Address createAddress(@PathVariable Long patientId, @RequestBody Address address) {
+        return addressService.createAddress(patientId, address);
     }
 
     @PutMapping("/update")
-    public void updateAddress(@RequestBody Address address){
-        addressService.updateAddress(address);
+    public Address updateAddress(@RequestBody Address address) {
+        return addressService.updateAddress(address);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteAddress(@PathVariable Long id){
-        addressService.deleteAddressById(id);
+    public void deleteAddress(@PathVariable Long id) {
+        addressService.deleteAddress(id);
     }
 }

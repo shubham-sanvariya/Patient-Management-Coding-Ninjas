@@ -1,7 +1,5 @@
 package com.example.patient_management_1.service;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

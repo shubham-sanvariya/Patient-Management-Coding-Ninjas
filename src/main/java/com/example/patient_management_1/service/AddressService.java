@@ -1,7 +1,5 @@
 package com.example.patient_management_1.service;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,41 +17,29 @@ public class AddressService {
     @Autowired
     PatientRepository patientRepository;
 
-    public Address getAddressById(Long id){
-        Address address = addressRepository.findById(id).get();
-        if (address == null) {
-            throw new NoSuchElementException("address not found by id: " + id);
-        }
-
-        return address;
+    public Address getAddress(Long id) {
+        return addressRepository.findById(id).orElse(null);
     }
 
-    public void saveAddress(Long patientId,Address address){
-        Patient patient = patientRepository.findById(patientId)
-        .orElseThrow(() -> new NoSuchElementException("patient not found by id: " + patientId));
-
-        Address ad = addressRepository.findById(address.getId()).orElse(null);
-        if (ad != null) {
-            throw new NoSuchElementException("address not found by id: " + address.getId());
-        }
-        addressRepository.save(address);
+    public Address createAddress(Long patientId, Address address) {
+        Patient patient = patientRepository.findById(patientId).get();
+        Address savedAddress = addressRepository.save(address);
         patient.setAddress(address);
         patientRepository.save(patient);
+        return savedAddress;
     }
 
-    public void updateAddress(Address address) {
-        Address ad = addressRepository.findById(address.getId()).get();
-        if (ad == null) {
-            throw new NoSuchElementException("address not found by id: " + address.getId());
-        }
-        addressRepository.save(address);
+    public Address updateAddress(Address address) {
+        return addressRepository.save(address);
     }
 
-    public void deleteAddressById(Long id) {
-        Address address = addressRepository.findById(id).get();
-        if (address == null) {
-            throw new NoSuchElementException("address not found by id: " + id);
+    public void deleteAddress(Long id) {
+        for (Patient patient : patientRepository.findAll()) {
+            if (patient.getAddress() != null && patient.getAddress().getId().equals(id)) {
+                patient.setAddress(null);
+                patientRepository.save(patient);
+                addressRepository.deleteById(id);
+            }
         }
-        addressRepository.deleteById(id);
     }
 }
