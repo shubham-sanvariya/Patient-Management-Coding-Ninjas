@@ -1,9 +1,9 @@
 package com.example.patient_management_1.service;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.patient_management_1.entity.Patient;
 import com.example.patient_management_1.repository.PatientRepository;
@@ -14,36 +14,18 @@ public class PatientService {
     @Autowired
     PatientRepository patientRepository;
 
-    public Patient getPatientById(Long id){
-        Patient patient = patientRepository.findById(id).get();
-        if (patient == null) {
-            throw new NoSuchElementException("patient not found by id: " + id);
-        }
-
-        return patient;
+    public Patient getPatient(Long id) {
+        return patientRepository.findById(id).orElse(null);
+    }
+    public Patient createPatient(@RequestBody Patient patient) {
+        return patientRepository.save(patient);
     }
 
-    public void savePatient(Patient patient) {
-        Patient pt = patientRepository.findById(patient.getId()).get();
-        if (pt == null) {
-            throw new NoSuchElementException("patient not found by id: " + patient.getId());
-        }
-        patientRepository.save(patient);
+    public Patient updatePatient(@RequestBody Patient patient) {
+        return patientRepository.save(patient);
     }
 
-    public void updatePatient(Patient patient) {
-        Patient pt = patientRepository.findById(patient.getId()).get();
-        if (pt == null) {
-            throw new NoSuchElementException("patient not found by id: " + patient.getId());
-        }
-        patientRepository.save(patient);
-    }
-
-    public void deletePatientById(Long id) {
-        Patient patient = patientRepository.findById(id).get();
-        if (patient == null) {
-            throw new NoSuchElementException("patient not found by id: " + id);
-        }
+    public void deletePatient(@PathVariable Long id) {
         patientRepository.deleteById(id);
     }
 }
