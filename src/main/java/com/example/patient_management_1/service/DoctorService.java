@@ -20,41 +20,28 @@ public class DoctorService {
     PatientRepository patientRepository;
 
     public Doctor getDoctorById(Long id){
-        Doctor doctor = doctorRepository.findById(id).get();
-        if (doctor == null) {
-            throw new NoSuchElementException("doctor not found by id: " + id);
-        }
-
-        return doctor;
+        return doctorRepository.findById(id).orElse(null);
     }
 
-    public void saveDoctor(Long patientId,Doctor doctor){
-        Patient patient = patientRepository.findById(patientId)
-        .orElseThrow(() -> new NoSuchElementException("patient not found by id: " + patientId));
-
-        Doctor dr = doctorRepository.findById(doctor.getId()).orElse(null);
-
-        if (dr != null) {
-            throw new NoSuchElementException("doctor already exists by id: " + doctor.getId());
-        }
-
-        doctorRepository.save(doctor);
+    public Doctor createDoctor(Long patientId, Doctor doctor) {
+        Patient patient = patientRepository.findById(patientId).get();
+        Doctor savedDoctor = doctorRepository.save(doctor);
         patient.setDoctor(doctor);
         patientRepository.save(patient);
+        return savedDoctor;
     }
 
-    public void updateDoctor(Doctor doctor){
-        Doctor dr = doctorRepository.findById(doctor.getId()).get();
-        if (dr == null) {
-            throw new NoSuchElementException("doctor not found by id: " + doctor.getId());
+    public Doctor updateDoctor(Doctor doctor) {
+        return doctorRepository.save(doctor);
+    }
+
+    public void deleteDoctor(Long id) {
+        for (Patient patient : patientRepository.findAll()) {
+            if (patient.getDoctor() != null && patient.getDoctor().getId().equals(id)) {
+                patient.setDoctor(null);
+                patientRepository.save(patient);
+                doctorRepository.deleteById(id);
+            }
         }
-        doctorRepository.save(doctor);
-    }
-
-    public void deleteDoctorById(Long id){
-        doctorRepository.findById(id)
-        .orElseThrow(() -> new NoSuchElementException("doctor not found by id: " + id));
-
-        doctorRepository.deleteById(id);
     }
 }

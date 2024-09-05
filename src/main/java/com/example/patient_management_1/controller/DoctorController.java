@@ -18,25 +18,25 @@ import com.example.patient_management_1.service.DoctorService;
 public class DoctorController {
     
     @Autowired
-    DoctorService doctorService;
+    private DoctorService doctorService;
 
     @GetMapping("/{id}")
-    public Doctor getDoctorById(@PathVariable Long id){
+    public Doctor getDoctor(@PathVariable Long id) {
         return doctorService.getDoctorById(id);
     }
 
     @PostMapping("/add/{patientId}")
-    public void saveDoctorForPatient(@PathVariable Long patientId, @RequestBody Doctor doctor){
-        doctorService.saveDoctor(patientId,doctor);
+    public Doctor createDoctor(@PathVariable Long patientId, @RequestBody Doctor doctor) {
+        return doctorService.createDoctor(patientId, doctor);
     }
 
     @PutMapping("/update")
-    public void updateDoctor(@RequestBody Doctor doctor){
-        doctorService.updateDoctor(doctor);
+    public Doctor updateDoctor(@RequestBody Doctor doctor) {
+        return doctorService.updateDoctor(doctor);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteDoctor(@PathVariable Long id){
-        doctorService.deleteDoctorById(id);
+    public void deleteDoctor(@PathVariable Long id) {
+        doctorService.deleteDoctor(id);
     }
 }
